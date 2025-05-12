@@ -1,0 +1,39 @@
+import java.util.Map;
+import java.util.stream.Stream;
+
+public class Show {
+    private int id;
+    private String location;
+    private Theatre theater;
+    private Movie movie;
+    private Map<String, Seat> seats;
+
+
+    public Show(int id, String location, Theatre theater, Movie movie, Map<String, Seat> seats) {
+        this.id = id;
+        this.location = location;
+        this.theater = theater;
+        this.movie = movie;
+        this.seats = seats;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public Theatre getTheater() {
+        return theater;
+    }
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public Map<String, Seat> getSeats() {
+        return seats;
+    }
+}
