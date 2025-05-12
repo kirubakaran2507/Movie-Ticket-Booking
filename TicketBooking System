@@ -1,0 +1,45 @@
+import java.util.*;
+
+abstract class TicketBookingSystem {
+    protected String BOOKING_ID_PREFIX = "BKG";
+    protected List<User> users;
+    protected List<Theatre> theaters;
+    protected List<Movie> movies;
+    protected List<Show> shows;
+    protected Map<String, Booking> bookings;
+
+    private static TicketBookingSystem instance;
+
+    public static TicketBookingSystem getInstance(){
+        if (instance==null){
+            instance = new TicketBookingSystemImpl();
+        }
+        return instance;
+    }
+
+    abstract public void addUsers(User user);
+
+    abstract public void addTheater(Theatre theater);
+
+    abstract public void addMovies(Movie movie);
+
+    abstract public void addShow(Show show);
+
+    abstract public void addBooking(String id, Booking booking);
+
+    abstract public boolean areSeatsAvailable(Show show, List<Seat>seats);
+
+    abstract public void markSeatsAsBooked(Show show, List<Seat>selectedSeats);
+
+    abstract public int calTotalPrice(List<Seat>seats);
+
+    abstract public boolean cancelBooking(String bookingId);
+
+    abstract public boolean confirmBooking(String bookingId);
+
+    abstract public void markSeatsAsAvailable(Show show, List<Seat>seats);
+
+    abstract public Booking bookTicket(User user, Show show, List<Seat>seats);
+
+    abstract public String generateBookingId(String userName);
+}
