@@ -1,0 +1,39 @@
+
+
+class Seat {
+    private final String seatId;
+    private final int row;
+    private final int col;
+    private final int price;
+    private final SeatType seatType;
+    private SeatStatus seatStatus;
+
+    public Seat(String seatId, int row, int cols, SeatType seatType,int price) {
+        this.seatId = seatId;
+        this.price = price;
+        this.row = row;
+        this.col = cols;
+        this.seatType = seatType;
+        seatStatus = SeatStatus.AVAILABLE;
+    }
+
+    public void setStatus(SeatStatus status) {
+        this.seatStatus = status;
+    }
+
+    public String getSeatId() {
+        return seatId;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public SeatType getSeatType() {
+        return seatType;
+    }
+
+    public SeatStatus getSeatStatus() {
+        return seatStatus;
+    }
+}
