@@ -1,0 +1,66 @@
+import java.util.*;
+
+public class Main {
+    private static Map<String, Seat> createSeats(int rows, int cols) {
+        Map<String, Seat> seats = new HashMap<>();
+
+        for (int row = 1; row <= rows; row++) {
+            for (int col = 1; col <= cols; col++) {
+                String seatId = row + "-" + col;
+                SeatType seatType = (row <= 2) ? SeatType.PREMIUM : SeatType.NORMAL;
+                int price = (seatType == SeatType.PREMIUM) ? 150 : 120;
+                Seat seat = new Seat(seatId, row, col, seatType,price);
+                seats.put(seatId, seat);
+            }
+        }
+        return seats;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        TicketBookingSystem ticketBookingSystem = TicketBookingSystem.getInstance();
+
+        Movie movie1 = new Movie(1, "GOAT", "ACTION, THRILLER, SUSPENCE", Rating.FIVE_STAR, 180);
+        Movie movie2 = new Movie(2, "BAHUBALI", "HISTORY", Rating.FOUR_STAR, 170);
+
+        ticketBookingSystem.addMovies(movie1);
+        ticketBookingSystem.addMovies(movie2);
+
+        Theatre theater1 = new Theatre(1, "RADIANCE", "MADURAI", new ArrayList<>());
+        Theatre theater2 = new Theatre(2, "INOX", "MADURAI", new ArrayList<>());
+
+        ticketBookingSystem.addTheater(theater1);
+        ticketBookingSystem.addTheater(theater2);
+
+        Show show1 = new Show(1, "MADURAI", theater1, movie1, createSeats(10, 10));
+        Show show2 = new Show(2, "CHENNAI", theater2, movie2, createSeats(5, 5));
+
+        ticketBookingSystem.addShow(show1);
+        ticketBookingSystem.addShow(show2);
+
+        User user = new User(1, "NITHISH", "digital@gamil.com", 875596218);
+
+        ticketBookingSystem.addUsers(user);
+
+        List<Seat> seats = new ArrayList<>(Arrays.asList(show1.getSeats().get("1-5"), show1.getSeats().get("1-6")));
+
+        Booking booking = ticketBookingSystem.bookTicket(user, show1, seats);
+        if (booking != null) {
+            ticketBookingSystem.markSeatsAsBooked(show1, seats);
+            System.out.println("Booking has been Successfully processed for the movie: " + booking.getBookingId());
+        } else {
+            System.out.println("Sorry the booking has not been done due to some technical issue");
+        }
+
+        //Cancelling
+        String bookingId;
+        System.out.println("Enter your Booking Id the Booking id will be BKG follows by your name 3 characters: ");
+        bookingId = scanner.next();
+
+        if (ticketBookingSystem.cancelBooking(bookingId)) {
+            System.out.println("Booking has been cancelled successfully");
+        } else {
+            System.out.println("Please enter valid Booking id and then try again");
+        }
+    }
+}
