@@ -1,0 +1,108 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+class TicketBookingSystemImpl extends TicketBookingSystem{
+    public TicketBookingSystemImpl() {
+        users = new ArrayList<>();
+        theaters = new ArrayList<>();
+        movies = new ArrayList<>();
+        shows = new ArrayList<>();
+        bookings = new HashMap<>();
+    }
+
+        public void addUsers (User user) {
+            users.add(user);
+        }
+
+        public void addTheater(Theatre theater) {
+            theaters.add(theater);
+        }
+
+        public void addMovies(Movie movie) {
+            movies.add(movie);
+        }
+
+        public void addShow(Show show) {
+            shows.add(show);
+        }
+
+        public void addBooking(String id, Booking booking) {
+            bookings.put(id,booking);
+        }
+
+        public Booking bookTicket (User user, Show show, List<Seat> seats){
+            if (areSeatsAvailable(show, seats)) {
+                markSeatsAsBooked(show, seats);
+                int totalPrice = calTotalPrice(seats);
+                String userName = user.getName();
+                // string bookingId = generateBookingId(User* user);
+                String bookingId = generateBookingId(userName);
+                Booking booking = new Booking(bookingId, user, show, BookingStatus.PENDING, seats,totalPrice);
+                bookings.put(bookingId,booking);
+                return booking;
+            } else {
+                System.out.println("Seats Are Not Available Sorry !");
+                return null;
+            }
+        }
+
+        public String generateBookingId(String userName) {
+            return BOOKING_ID_PREFIX + userName.charAt(0) + ""+ userName.charAt(1) + "" + userName.charAt(2);
+        }
+
+        public boolean areSeatsAvailable(Show show, List <Seat> seats) {
+            for (Seat seat :seats){
+                Seat showSeat = show.getSeats().get(seat.getSeatId());
+                if (showSeat == null || showSeat.getSeatStatus() == SeatStatus.BOOKED) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public boolean confirmBooking(String bookingId) {
+            Booking booking = bookings.get(bookingId);
+            if (booking != null) {
+                booking.setBookingStatus(BookingStatus.CONFIRMED);
+                return true;
+            }
+
+            return false;
+        }
+
+        public boolean cancelBooking(String bookingId) {
+            Booking booking = bookings.get(bookingId);
+            if (booking != null && booking.getBookingStatus() != BookingStatus.CANCELLED) {
+                booking.setBookingStatus(BookingStatus.CANCELLED);
+                markSeatsAsAvailable(booking.getShow(), booking.getSeats());
+                return true;
+            }
+            return false;
+        }
+
+        public void markSeatsAsAvailable(Show show, List<Seat > seats) {
+            for (Seat seat :seats){
+                Seat showSeats = show.getSeats().get(seat.getSeatId());
+                if (showSeats.getSeatStatus() == SeatStatus.BOOKED) {
+                    showSeats.setStatus(SeatStatus.AVAILABLE);
+                }
+            }
+        }
+
+        public void markSeatsAsBooked(Show show, List < Seat > seats) {
+            for (Seat seat :seats){
+                Seat showSeat = show.getSeats().get(seat.getSeatId());
+                showSeat.setStatus(SeatStatus.BOOKED);
+            }
+        }
+
+        public int calTotalPrice(List< Seat> seats) {
+            int total = 0;
+            for (Seat seat : seats) {
+                total += seat.getPrice();
+            }
+
+            return total;
+        }
+}
