@@ -1,0 +1,36 @@
+class Movie {
+
+    private int id;
+    private String title;
+    private String description;
+    private Rating rating;
+    private int duration;
+
+    public Movie(int id, String title, String description, Rating rating, int duration) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.rating = rating;
+        this.duration = duration;
+    }
+
+    public void setRatings(Rating rating) {
+        this.rating = rating;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Rating getRatings() {
+        return rating;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+}
