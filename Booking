@@ -1,0 +1,42 @@
+class Booking {
+    private String bookingId;
+    private BookingStatus status;
+    private User user;
+    private Show show;
+    private int totalPrice;
+    private List<Seat> seats;
+
+
+    public Booking(String bookingId, User user, Show show, BookingStatus status, List<Seat> seats,int totalPrice) {
+        this.bookingId = bookingId;
+        this.user = user;
+        this.show = show;
+        this.status = status;
+        this.totalPrice = totalPrice;
+        this.seats = seats;
+    }
+
+    public void setBookingStatus(BookingStatus status) {
+        this.status = status;
+    }
+
+    public String getBookingId() {
+        return bookingId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Show getShow() {
+        return show;
+    }
+
+    public List<Seat> getSeats() {
+        return seats;
+    }
+
+    BookingStatus getBookingStatus() {
+        return status;
+    }
+}
